@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Status Rawat Inap · Puskesmas Gemarang Ngawi</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--g:#059669;--gl:#d1fae5;--gm:#6ee7b7;--r:#dc2626;--rl:#fee2e2;--y:#d97706;--yl:#fef3c7;--bg:#f0fdf4;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.view{display:none}.view.active{display:block}
+
+/* HEADER */
+.hdr{background:linear-gradient(150deg,#064e3b,#065f46,#059669);padding:24px 16px 20px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:18px;position:relative}
+.hdr-logo{width:46px;height:46px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;border:1.5px solid rgba(255,255,255,0.2);flex-shrink:0}
+.hdr-name h1{font-size:15px;font-weight:800;color:#fff;line-height:1.2}
+.hdr-name p{font-size:10.5px;color:rgba(255,255,255,0.6);margin-top:2px}
+.live-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:4px 10px;font-size:10px;color:#fff;font-weight:700;margin-bottom:14px;position:relative}
+.ldot{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;position:relative}
+.stat{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:11px;padding:11px 6px;text-align:center}
+.stat .n{font-size:24px;font-weight:800;color:#fff;line-height:1}
+.stat .n.g{color:#4ade80}.stat .n.r{color:#f87171}
+.stat .t{font-size:9px;color:rgba(255,255,255,.55);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+
+/* BANNER */
+.banner{margin:14px;border-radius:13px;padding:13px 15px;display:flex;align-items:center;gap:11px}
+.banner.ok{background:var(--gl);border:1.5px solid var(--gm)}
+.banner.warn{background:var(--yl);border:1.5px solid #fde68a}
+.banner.full{background:var(--rl);border:1.5px solid #fca5a5}
+.bi{font-size:26px;flex-shrink:0}
+.bt strong{font-size:13.5px;font-weight:800;display:block}
+.bt span{font-size:11px;color:var(--muted);margin-top:1px;display:block}
+.ok .bt strong{color:var(--g)}.warn .bt strong{color:var(--y)}.full .bt strong{color:var(--r)}
+
+/* ROOMS */
+.sec{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:0 14px;margin-bottom:9px}
+.rooms{padding:0 14px;display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+.rc{background:var(--card);border:1.5px solid var(--border);border-radius:15px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.rch{display:flex;align-items:center;justify-content:space-between;padding:12px 13px;border-bottom:1px solid var(--bg)}
+.rci h3{font-size:13.5px;font-weight:700}
+.rci p{font-size:10.5px;color:var(--muted);margin-top:1px}
+.rbadge{font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.rbadge.ok{background:var(--gl);color:var(--g)}
+.rbadge.full{background:var(--rl);color:var(--r)}
+.rbadge.vip{background:var(--yl);color:var(--y)}
+.rbeds{display:flex;gap:7px;padding:11px 13px;flex-wrap:wrap}
+.bc{display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:9px;font-size:11.5px;font-weight:600}
+.bc.available{background:var(--gl);color:var(--g)}
+.bc.occupied{background:var(--rl);color:var(--r)}
+.bc .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.bc.available .dot{background:var(--g)}.bc.occupied .dot{background:var(--r)}
+
+/* BUTTONS */
+.wa{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#065f46,#059669);color:#fff;font-weight:800;font-size:13.5px;padding:13px;border-radius:13px;border:none;cursor:pointer;font-family:'Sora',sans-serif;box-shadow:0 4px 14px rgba(5,150,105,.25);margin:0 14px;width:calc(100% - 28px);transition:transform .15s}
+.wa:active{transform:scale(.98)}
+.upd{text-align:center;font-size:10px;color:var(--muted);padding:10px 14px 6px}
+.nurse{text-align:center;padding:4px 14px 24px}
+.nurse button{background:transparent;border:1.5px solid var(--border);border-radius:9px;padding:8px 18px;font-size:11.5px;font-weight:600;color:var(--muted);cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s}
+.nurse button:hover{border-color:#2563eb;color:#2563eb}
+.rfbtn{display:flex;align-items:center;justify-content:center;gap:5px;background:transparent;border:1.5px solid var(--border);border-radius:9px;padding:7px 14px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;font-family:'Sora',sans-serif;margin:0 auto 4px;transition:all .2s}
+.rfbtn:hover{border-color:var(--g);color:var(--g)}
+
+/* CONFIRM */
+#vc{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;background:#0f172a}
+.cc{background:#1e293b;border-radius:22px;width:100%;max-width:340px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5);animation:pop .3s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes pop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+.cct{padding:22px;border-bottom:1px solid rgba(255,255,255,.07)}
+.cab{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:10.5px;font-weight:700;margin-bottom:14px}
+.cab.masuk{background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.3)}
+.cab.pulang{background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.3)}
+.crn{font-size:12px;color:rgba(255,255,255,.45);font-weight:600;margin-bottom:3px}
+.cbn{font-size:28px;font-weight:800;color:#fff;line-height:1.1;margin-bottom:3px}
+.cbn span{color:#38bdf8}
+.csb{font-size:11.5px;color:rgba(255,255,255,.35)}
+.ccd{padding:14px 22px;border-bottom:1px solid rgba(255,255,255,.07)}
+.cr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px}
+.cr:last-child{border-bottom:none}
+.cr .lb{color:rgba(255,255,255,.4);font-weight:500}
+.cr .vl{color:#fff;font-weight:700;font-size:11.5px}
+.cca{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:18px 22px}
+.bcl{background:rgba(255,255,255,.07);color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:12px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif}
+.bco{border-radius:11px;padding:12px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:'Sora',sans-serif;border:none;display:flex;align-items:center;justify-content:center;gap:5px;transition:opacity .2s}
+.bco:disabled{opacity:.5;cursor:not-allowed}
+.bco.masuk{background:linear-gradient(135deg,#059669,#34d399);color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.4)}
+.bco.pulang{background:linear-gradient(135deg,#dc2626,#f87171);color:#fff;box-shadow:0 4px 14px rgba(220,38,38,.4)}
+
+/* SUCCESS */
+#vs{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#0f172a;text-align:center}
+.sc{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:44px;margin:0 auto 18px;animation:pop .4s cubic-bezier(.175,.885,.32,1.275)}
+.sc.masuk{background:rgba(52,211,153,.15);border:2px solid rgba(52,211,153,.4)}
+.sc.pulang{background:rgba(248,113,113,.15);border:2px solid rgba(248,113,113,.4)}
+#vs h2{font-size:20px;font-weight:800;color:#fff;margin-bottom:5px}
+#vs p{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:24px}
+.bk{background:rgba(255,255,255,.08);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.15);border-radius:11px;padding:11px 26px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;margin:4px}
+.bd{background:rgba(56,189,248,.1);color:#38bdf8;border:1px solid rgba(56,189,248,.2);border-radius:11px;padding:11px 26px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;margin:4px}
+
+/* SCANNER */
+#vsc{min-height:100vh;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px}
+#vsc h2{font-size:17px;font-weight:800;color:#fff;margin-bottom:5px;text-align:center}
+#vsc p{font-size:11.5px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:18px;line-height:1.6}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:360px;max-height:60vh;overflow-y:auto;padding-right:2px}
+.sgrid::-webkit-scrollbar{width:3px}
+.sgrid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+.qi{background:#1e293b;border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:13px 10px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;transition:all .2s}
+.qi:hover{border-color:rgba(56,189,248,.4);background:#243654;transform:scale(1.02)}
+.qi:active{transform:scale(.97)}
+.qi .ic{font-size:24px}
+.qi .lb{font-size:10.5px;font-weight:700;color:#fff;text-align:center;line-height:1.4}
+.qi .tp{font-size:9px;font-weight:700;padding:2px 7px;border-radius:9px;text-transform:uppercase;letter-spacing:.4px}
+.qi .tp.masuk{background:rgba(52,211,153,.15);color:#34d399}
+.qi .tp.pulang{background:rgba(248,113,113,.15);color:#f87171}
+.scbk{margin-top:14px;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:9px;padding:9px 22px;font-size:11.5px;font-weight:700;color:rgba(255,255,255,.45);cursor:pointer;font-family:'Sora',sans-serif}
+
+/* ERROR */
+#ver{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#0f172a;text-align:center}
+#ver h2{font-size:18px;font-weight:800;color:#f87171;margin-bottom:8px}
+#ver p{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:22px;line-height:1.6}
+.rtbtn{background:rgba(248,113,113,.1);color:#f87171;border:1px solid rgba(248,113,113,.3);border-radius:11px;padding:11px 26px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif}
+</style>
+</head>
+<body>
+
+<!-- DASHBOARD -->
+<div id="vd" class="view active">
+  <div class="hdr">
+    <div class="hdr-top">
+      <div class="hdr-logo">🏥</div>
+      <div class="hdr-name">
+        <h1>Status Rawat Inap</h1>
+        <p>Puskesmas Gemarang Ngawi · Real Time</p>
+      </div>
+    </div>
+    <div class="live-pill"><div class="ldot"></div>LIVE · Terhubung Google Sheet</div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="st">10</div><div class="t">Total</div></div>
+      <div class="stat"><div class="n g" id="sa">—</div><div class="t">Tersedia</div></div>
+      <div class="stat"><div class="n r" id="so">—</div><div class="t">Terisi</div></div>
+    </div>
+  </div>
+  <div id="banner" class="banner ok">
+    <div class="bi">✅</div>
+    <div class="bt"><strong>Bed tersedia</strong><span>Silakan datang atau konfirmasi via WhatsApp</span></div>
+  </div>
+  <div class="sec">Detail Ruangan</div>
+  <div class="rooms" id="rooms"></div>
+  <button class="wa" onclick="window.open('https://wa.me/6281200000000','_blank')">💬 Konfirmasi via WhatsApp</button>
+  <div class="upd">🕐 Diperbarui: <span id="upd">—</span></div>
+  <div style="text-align:center;padding:6px 14px 4px">
+    <button class="rfbtn" id="rfbtn" onclick="load()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      Refresh
+    </button>
+  </div>
+  <div class="nurse"><button onclick="showScanner()">🔐 Mode Perawat · Scan Barcode</button></div>
+</div>
+
+<!-- CONFIRM -->
+<div id="vc" class="view">
+  <div class="cc">
+    <div class="cct">
+      <div class="cab masuk" id="cab">📥 PASIEN MASUK</div>
+      <div class="crn" id="crn">Ruang —</div>
+      <div class="cbn">Bed <span id="cbn">—</span></div>
+      <div class="csb" id="csb">Konfirmasi?</div>
+    </div>
+    <div class="ccd">
+      <div class="cr"><span class="lb">Ruangan</span><span class="vl" id="cr2">—</span></div>
+      <div class="cr"><span class="lb">Nomor Bed</span><span class="vl" id="cb2">—</span></div>
+      <div class="cr"><span class="lb">Aksi</span><span class="vl" id="cak">—</span></div>
+      <div class="cr"><span class="lb">Waktu</span><span class="vl" id="ctm">—</span></div>
+      <div class="cr"><span class="lb">Status kini</span><span class="vl" id="cnw">—</span></div>
+    </div>
+    <div class="cca">
+      <button class="bcl" onclick="showScanner()">✕ Batal</button>
+      <button class="bco masuk" id="bok" onclick="doConfirm()">✓ Konfirmasi</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="vs" class="view">
+  <div class="sc masuk" id="sc">📥</div>
+  <h2 id="stitle">Berhasil!</h2>
+  <p id="sdesc">Status bed diperbarui.</p>
+  <div>
+    <button class="bk" onclick="showScanner()">← Scan Lagi</button>
+    <button class="bd" onclick="load();showView('vd')">📊 Dashboard</button>
+  </div>
+</div>
+
+<!-- SCANNER -->
+<div id="vsc" class="view">
+  <h2>📱 Pilih Barcode Bed</h2>
+  <p>Tap sesuai stiker yang di-scan perawat<br><small style="color:rgba(255,255,255,.2)">Di sistem nyata: kamera HP scan QR fisik</small></p>
+  <div class="sgrid" id="sgrid"></div>
+  <button class="scbk" onclick="load();showView('vd')">← Dashboard Publik</button>
+</div>
+
+<!-- ERROR -->
+<div id="ver" class="view">
+  <div style="font-size:44px;margin-bottom:14px">⚠️</div>
+  <h2>Gagal Terhubung</h2>
+  <p id="emsg">Tidak dapat mengambil data.<br>Periksa koneksi internet.</p>
+  <button class="rtbtn" onclick="load()">🔄 Coba Lagi</button>
+</div>
+
+<script>
+var SHEET = 'https://script.google.com/macros/s/AKfycbxJADtvv3lE_xjfs15UYqijuYXkiBK62IroJkf8NzUAMl3hLien6G0rX7UmMQxNd403iQ/exec';
+var SKEY  = 'pgemarang_beds';
+
+var ROOMS = [
+  {id:'edelweis',name:'Edelweis',   emoji:'🌸',type:'Umum',beds:[1,2]},
+  {id:'mawar',   name:'Mawar',      emoji:'🌹',type:'Umum',beds:[1,2]},
+  {id:'sakura',  name:'Sakura',     emoji:'🌺',type:'Umum',beds:[1,2]},
+  {id:'tulip',   name:'Tulip',      emoji:'🌷',type:'Umum',beds:[1,2]},
+  {id:'bougenv', name:'Bougenville',emoji:'💜',type:'Anak',beds:[1]},
+  {id:'anggrek', name:'Anggrek',    emoji:'🌟',type:'VIP', beds:[1]},
+];
+
+function defState(){
+  var s={};
+  ROOMS.forEach(function(r){r.beds.forEach(function(b){s[r.id+'-'+b]='available';});});
+  return s;
+}
+function loadLocal(){
+  try{var x=localStorage.getItem(SKEY);if(x)return JSON.parse(x);}catch(e){}
+  return defState();
+}
+function saveLocal(s){try{localStorage.setItem(SKEY,JSON.stringify(s));}catch(e){}}
+
+var BS = loadLocal();
+var pending = null;
+
+function showView(id){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function now(){
+  return new Date().toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function jsonp(url,cb,onOk,onErr){
+  var old=document.getElementById('_jp');if(old)old.remove();
+  var t=setTimeout(function(){onErr&&onErr('timeout');},10000);
+  window[cb]=function(d){clearTimeout(t);delete window[cb];onOk(d);};
+  var s=document.createElement('script');
+  s.id='_jp';s.src=url+'&callback='+cb+'&_='+Date.now();
+  s.onerror=function(){clearTimeout(t);onErr&&onErr('error');};
+  document.body.appendChild(s);
+}
+
+function load(){
+  // Tampilkan data lokal dulu (instant)
+  render();
+  showView('vd');
+  // Sinkron dari sheet di background
+  syncSheet();
+}
+
+function syncSheet(){
+  jsonp(SHEET+'?action=getAll','_cbL',
+    function(d){
+      if(d&&d.beds&&d.beds.length){
+        var ns={};
+        d.beds.forEach(function(b){
+          ns[b.room_id.trim().toLowerCase()+'-'+String(b.bed_num).trim()]=b.status.trim().toLowerCase();
+        });
+        BS=ns; saveLocal(BS); render();
+      }
+    },
+    function(){/* silent fail */}
+  );
+}
+
+function render(){
+  var av=Object.values(BS).filter(function(s){return s==='available';}).length;
+  var oc=Object.values(BS).filter(function(s){return s==='occupied';}).length;
+  document.getElementById('sa').textContent=av;
+  document.getElementById('so').textContent=oc;
+  document.getElementById('upd').textContent=now();
+
+  var bn=document.getElementById('banner');
+  if(av===0){
+    bn.className='banner full';
+    bn.innerHTML='<div class="bi">🚫</div><div class="bt"><strong>Semua bed penuh</strong><span>Mohon cari puskesmas terdekat</span></div>';
+  }else if(av<=2){
+    bn.className='banner warn';
+    bn.innerHTML='<div class="bi">⚠️</div><div class="bt"><strong>Tersisa '+av+' bed</strong><span>Segera hubungi kami untuk konfirmasi</span></div>';
+  }else{
+    bn.className='banner ok';
+    bn.innerHTML='<div class="bi">✅</div><div class="bt"><strong>'+av+' bed tersedia</strong><span>Silakan datang atau konfirmasi via WhatsApp</span></div>';
+  }
+
+  document.getElementById('rooms').innerHTML=ROOMS.map(function(rm){
+    var chips=rm.beds.map(function(b){
+      var st=BS[rm.id+'-'+b]||'available';
+      return '<div class="bc '+st+'"><div class="dot"></div>Bed '+b+' · '+(st==='available'?'Kosong':'Terisi')+'</div>';
+    }).join('');
+    var a=rm.beds.filter(function(b){return(BS[rm.id+'-'+b]||'available')==='available';}).length;
+    var bc=a===0?'full':rm.type==='VIP'?'vip':'ok';
+    var bt=a===0?'❌ Penuh':rm.type==='VIP'?'⭐ VIP · '+a+' Kosong':'✅ '+a+' Kosong';
+    return '<div class="rc"><div class="rch"><div class="rci"><h3>'+rm.emoji+' Ruang '+rm.name+'</h3><p>'+rm.beds.length+' bed · '+rm.type+'</p></div><div class="rbadge '+bc+'">'+bt+'</div></div><div class="rbeds">'+chips+'</div></div>';
+  }).join('');
+}
+
+function showScanner(){
+  var g=document.getElementById('sgrid'),items=[];
+  ROOMS.forEach(function(rm){rm.beds.forEach(function(b){
+    items.push({id:rm.id,name:rm.name,emoji:rm.emoji,b:b,a:'masuk'});
+    items.push({id:rm.id,name:rm.name,emoji:rm.emoji,b:b,a:'pulang'});
+  });});
+  g.innerHTML=items.map(function(x){
+    return '<div class="qi" onclick="scan(\''+x.id+'\',\''+x.name+'\',\''+x.emoji+'\','+x.b+',\''+x.a+'\')">'
+      +'<div class="ic">'+(x.a==='masuk'?'📥':'📤')+'</div>'
+      +'<div class="lb">'+x.emoji+' '+x.name+'<br>Bed '+x.b+'</div>'
+      +'<div class="tp '+x.a+'">'+(x.a==='masuk'?'MASUK':'PULANG')+'</div>'
+      +'</div>';
+  }).join('');
+  showView('vsc');
+}
+
+function scan(id,name,emoji,b,a){
+  var cur=BS[id+'-'+b]||'available';
+  pending={id:id,name:name,b:b,a:a};
+  var cab=document.getElementById('cab');
+  cab.className='cab '+a;
+  cab.textContent=a==='masuk'?'📥 PASIEN MASUK':'📤 PASIEN PULANG';
+  document.getElementById('crn').textContent='Ruang '+name;
+  document.getElementById('cbn').textContent=b;
+  document.getElementById('csb').textContent=a==='masuk'?'Konfirmasi pasien masuk ke bed ini?':'Konfirmasi pasien pulang dari bed ini?';
+  document.getElementById('cr2').textContent=emoji+' Ruang '+name;
+  document.getElementById('cb2').textContent='Bed '+b;
+  document.getElementById('cak').textContent=a==='masuk'?'Pasien Masuk':'Pasien Pulang';
+  document.getElementById('ctm').textContent=now();
+  document.getElementById('cnw').textContent=cur==='available'?'🟢 Kosong':'🔴 Terisi';
+  var bok=document.getElementById('bok');
+  bok.className='bco '+a;
+  bok.textContent=a==='masuk'?'✓ Ya, Pasien Masuk':'✓ Ya, Pasien Pulang';
+  bok.disabled=false;
+  showView('vc');
+}
+
+function doConfirm(){
+  if(!pending)return;
+  var id=pending.id,name=pending.name,b=pending.b,a=pending.a;
+  var ns=a==='masuk'?'occupied':'available';
+  // Simpan lokal dulu (instant, tidak perlu internet)
+  BS[id+'-'+b]=ns; saveLocal(BS); render();
+  // Kirim ke sheet di background
+  jsonp(SHEET+'?action=update&room_id='+id+'&bed_num='+b+'&status='+ns,'_cbU',
+    function(){},function(){}
+  );
+  var sc=document.getElementById('sc');
+  if(a==='masuk'){
+    sc.className='sc masuk';sc.textContent='📥';
+    document.getElementById('stitle').textContent='Pasien Tercatat Masuk!';
+    document.getElementById('sdesc').textContent='Bed '+b+' Ruang '+name+' kini terisi.';
+  }else{
+    sc.className='sc pulang';sc.textContent='📤';
+    document.getElementById('stitle').textContent='Pasien Tercatat Pulang!';
+    document.getElementById('sdesc').textContent='Bed '+b+' Ruang '+name+' kini kosong.';
+  }
+  showView('vs');
+}
+
+// Cek URL params (QR Code fisik)
+function checkParams(){
+  var p=new URLSearchParams(window.location.search);
+  var r=p.get('room'),b=p.get('bed'),a=p.get('action');
+  if(r&&b&&a){
+    var rd=ROOMS.find(function(x){return x.id===r;});
+    if(rd){scan(r,rd.name,rd.emoji,parseInt(b),a);return;}
+  }
+}
+
+// INIT
+BS=loadLocal();
+render();
+showView('vd');
+syncSheet();
+setTimeout(checkParams,400);
+setInterval(function(){
+  var v=document.querySelector('.view.active');
+  if(v&&v.id==='vd')syncSheet();
+},60000);
+</script>
+</body>
+</html>
