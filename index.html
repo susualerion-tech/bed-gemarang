@@ -1,40 +1,277 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Status Rawat Inap · Puskesmas Gemarang Ngawi</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* CSS SAMA SEPERTI SEBELUMNYA */
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--g:#059669;--gl:#d1fae5;--gm:#6ee7b7;--r:#dc2626;--rl:#fee2e2;--y:#d97706;--yl:#fef3c7;--bg:#f0fdf4;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0}
-body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.view{display:none}.view.active{display:block;animation:fadeIn 0.25s ease-out}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bed Monitoring Puskesmas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --primary: #059669;
+            --primary-dark: #047857;
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-sub: #6b7280;
+            --danger: #ef4444;
+            --danger-bg: #fee2e2;
+            --success: #10b981;
+            --success-bg: #d1fae5;
+            --radius: 16px;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); padding-bottom: 90px; }
+        .container { max-width: 480px; margin: 0 auto; background: #fafafa; min-height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
 
-/* HEADER */
-.hdr{background:linear-gradient(150deg,#064e3b,#065f46,#059669);padding:24px 16px 20px;position:relative;overflow:hidden}
-.hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.05)}
-.hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:18px;position:relative}
-.hdr-logo{width:46px;height:46px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;border:1.5px solid rgba(255,255,255,0.2);flex-shrink:0}
-.hdr-name h1{font-size:15px;font-weight:800;color:#fff;line-height:1.2}
-.hdr-name p{font-size:10.5px;color:rgba(255,255,255,0.6);margin-top:2px}
-.live-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:4px 10px;font-size:10px;color:#fff;font-weight:700;margin-bottom:14px;position:relative}
-.ldot{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:blink 1.4s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;position:relative}
-.stat{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:11px;padding:11px 6px;text-align:center}
-.stat .n{font-size:24px;font-weight:800;color:#fff;line-height:1}
-.stat .n.g{color:#4ade80}.stat .n.r{color:#f87171}
-.stat .t{font-size:9px;color:rgba(255,255,255,.55);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+        /* HEADER */
+        .header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 24px 20px 30px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3); }
+        .header h1 { margin: 0; font-size: 20px; font-weight: 800; }
+        .badge-live { background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; }
+        .dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
-/* BANNER */
-.banner{margin:14px;border-radius:13px;padding:13px 15px;display:flex;align-items:center;gap:11px}
-.banner.ok{background:var(--gl);border:1.5px solid var(--gm)}
-.banner.warn{background:var(--yl);border:1.5px solid #fde68a}
-.banner.full{background:var(--rl);border:1.5px solid #fca5a5}
-.bi{font-size:26px;flex-shrink:0}
-.bt strong{font-size:13.5px;font-weight:800;display:block}
-.bt span{font-size:11px;color:var(--muted);margin-top:1px;display:block}
-.ok .bt strong{color:var(--g)}.warn .bt strong{color:var(--y)}.full .bt
+        /* STATS */
+        .stats-container { display: flex; gap: 10px; padding: 0 20px; margin-top: -25px; position: relative; z-index: 60; }
+        .stat-card { flex: 1; background: var(--card-bg); padding: 15px 10px; border-radius: var(--radius); text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .stat-val { font-size: 24px; font-weight: 800; display: block; line-height: 1; margin-bottom: 4px; }
+        .stat-label { font-size: 10px; color: var(--text-sub); text-transform: uppercase; font-weight: 700; }
+        .c-avail { color: var(--primary); } .c-occ { color: var(--danger); }
+
+        /* ROOMS */
+        .section-label { padding: 25px 20px 10px; font-size: 14px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; }
+        .room-card { background: var(--card-bg); margin: 0 20px 16px; border-radius: var(--radius); box-shadow: 0 2px 4px rgba(0,0,0,0.02); overflow: hidden; border: 1px solid rgba(0,0,0,0.03); }
+        .room-header { padding: 12px 16px; background: #f9fafb; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
+        .room-name { font-weight: 700; font-size: 15px; }
+        .bed-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 15px; }
+        .bed-chip { display: flex; flex-direction: column; align-items: center; padding: 12px; border-radius: 12px; border: 1.5px solid transparent; position: relative; }
+        .bed-chip.available { background: var(--success-bg); border-color: #a7f3d0; color: var(--primary-dark); }
+        .bed-chip.occupied { background: var(--danger-bg); border-color: #fecaca; color: #991b1b; }
+        .bed-num { font-size: 12px; font-weight: 600; opacity: 0.8; }
+        .bed-status { font-size: 14px; font-weight: 800; }
+
+        /* FAB */
+        .fab-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 100; }
+        .fab { background: var(--text-main); color: white; width: 50px; height: 50px; border-radius: 50%; font-weight: 700; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: transform 0.2s; }
+        .fab:active { transform: scale(0.9); }
+
+        /* CONFIRM PAGE */
+        .view { display: none; animation: slideUp 0.3s ease-out; }
+        .view.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .fs-msg { height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px; }
+        .fs-icon { font-size: 64px; margin-bottom: 20px; background: white; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-full { width: 100%; padding: 16px; border-radius: 16px; border: none; font-weight: 700; font-size: 16px; margin-top: 10px; cursor: pointer; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-ghost { background: transparent; color: var(--text-sub); }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div id="view-home" class="view">
+            <header class="header">
+                <div style="display:flex; justify-content:space-between; align-items:center">
+                    <div>
+                        <h1>🏥 Puskesmas Gemarang</h1>
+                        <div class="badge-live"><div class="dot"></div>Live Monitor</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <span class="stat-val" id="total-beds" style="color:var(--text-main)">0</span>
+                    <span class="stat-label">Total</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val c-avail" id="avail-beds">0</span>
+                    <span class="stat-label">Kosong</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val c-occ" id="occ-beds">0</span>
+                    <span class="stat-label">Terisi</span>
+                </div>
+            </div>
+
+            <div class="section-label">Status Ruangan</div>
+            <div id="room-container">
+                <div style="text-align:center; padding: 60px 20px; color: var(--text-sub);">Memuat data...</div>
+            </div>
+
+            <div class="fab-container">
+                <button class="fab" onclick="app.sync()">↻</button>
+            </div>
+        </div>
+
+        <div id="view-confirm" class="view">
+            <div class="fs-msg">
+                <div class="fs-icon">🤔</div>
+                <h2 id="confirm-title" style="margin-bottom: 10px;">Konfirmasi</h2>
+                <p id="confirm-desc" style="color:var(--text-sub); line-height: 1.6; margin-bottom: 30px;">...</p>
+                
+                <button class="btn-full" id="btn-process" onclick="app.processAction()">Ya, Proses</button>
+                <button class="btn-full btn-ghost" onclick="app.clearParams()">Batal / Kembali</button>
+            </div>
+        </div>
+
+        <div id="view-success" class="view">
+            <div class="fs-msg">
+                <div class="fs-icon" style="color: var(--success)">🎉</div>
+                <h2 style="margin-bottom: 10px;">Berhasil!</h2>
+                <p style="color:var(--text-sub); margin-bottom: 40px;">Status bed telah diperbarui.</p>
+                <button class="btn-full btn-primary" onclick="app.clearParams()">Kembali ke Dashboard</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    const CONFIG = {
+        sheetUrl: 'https://script.google.com/macros/s/AKfycbxJADtvv3lE_xjfs15UYqijuYXkiBK62IroJkf8NzUAMl3hLien6G0rX7UmMQxNd403iQ/exec',
+        rooms: [
+            {id:'edelweis', name:'Edelweis', beds:[1,2]},
+            {id:'mawar', name:'Mawar', beds:[1,2]},
+            {id:'sakura', name:'Sakura', beds:[1,2]},
+            {id:'tulip', name:'Tulip', beds:[1,2]},
+            {id:'bougenv', name:'Bougenville', beds:[1]},
+            {id:'anggrek', name:'Anggrek', beds:[1]},
+        ]
+    };
+
+    let appState = { beds: {}, pendingAction: null };
+
+    // --- LOGIKA UTAMA ---
+    const app = {
+        init: function() {
+            this.loadLocal();
+            this.sync();
+            
+            // CEK QR CODE (URL PARAMETERS)
+            // Contoh URL QR: website.com/?room=edelweis&bed=1&action=masuk
+            const p = new URLSearchParams(window.location.search);
+            const room = p.get('room');
+            const bed = p.get('bed');
+            const action = p.get('action');
+
+            if(room && bed && action) {
+                // Jika ada parameter, langsung buka menu konfirmasi
+                this.prepareConfirm(room, bed, action);
+            } else {
+                // Jika tidak ada, buka dashboard biasa
+                this.showView('home');
+            }
+        },
+
+        showView: function(id) {
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+            document.getElementById('view-' + id).classList.add('active');
+            window.scrollTo(0,0);
+        },
+
+        loadLocal: function() {
+            try { appState.beds = JSON.parse(localStorage.getItem('bed_data') || '{}'); } catch(e){}
+            if(Object.keys(appState.beds).length === 0) {
+                CONFIG.rooms.forEach(r => r.beds.forEach(b => appState.beds[`${r.id}-${b}`] = 'available'));
+            }
+            this.renderDashboard();
+        },
+
+        renderDashboard: function() {
+            let html = '', total=0, avail=0, occ=0;
+            CONFIG.rooms.forEach(r => {
+                let bedHtml = '';
+                r.beds.forEach(b => {
+                    let st = appState.beds[`${r.id}-${b}`] || 'available';
+                    total++; st==='available' ? avail++ : occ++;
+                    let label = st==='available' ? 'KOSONG' : 'TERISI';
+                    bedHtml += `<div class="bed-chip ${st}"><span class="bed-num">BED ${b}</span><span class="bed-status">${label}</span></div>`;
+                });
+                html += `<div class="room-card"><div class="room-header"><div class="room-name">🌸 ${r.name}</div><div class="room-type">${r.beds.length} Bed</div></div><div class="bed-grid">${bedHtml}</div></div>`;
+            });
+            document.getElementById('room-container').innerHTML = html;
+            document.getElementById('total-beds').innerText = total;
+            document.getElementById('avail-beds').innerText = avail;
+            document.getElementById('occ-beds').innerText = occ;
+        },
+
+        // Dipanggil otomatis saat Scan QR
+        prepareConfirm: function(roomId, bedNum, action) {
+            // Cari nama ruangan yang cantik
+            let rData = CONFIG.rooms.find(r => r.id === roomId);
+            let rName = rData ? rData.name : roomId;
+
+            appState.pendingAction = { roomId, roomName: rName, bedNum, action };
+            
+            document.getElementById('confirm-title').innerText = action === 'masuk' ? 'Pasien Masuk?' : 'Pasien Pulang?';
+            document.getElementById('confirm-desc').innerHTML = `
+                Konfirmasi perubahan status:<br>
+                <b>${rName} - Bed ${bedNum}</b><br>
+                menjadi <span style="color:${action==='masuk'?'red':'green'};font-weight:bold">${action==='masuk'?'TERISI':'KOSONG'}</span>
+            `;
+            
+            let btn = document.getElementById('btn-process');
+            if(action === 'masuk') {
+                btn.className = 'btn-full btn-primary';
+                btn.innerText = 'Ya, Konfirmasi Masuk';
+            } else {
+                btn.className = 'btn-full btn-danger';
+                btn.innerText = 'Ya, Konfirmasi Pulang';
+            }
+            
+            this.showView('confirm');
+        },
+
+        processAction: function() {
+            let { roomId, bedNum, action } = appState.pendingAction;
+            let ns = action === 'masuk' ? 'occupied' : 'available';
+            
+            // Update lokal (biar cepat)
+            appState.beds[`${roomId}-${bedNum}`] = ns;
+            localStorage.setItem('bed_data', JSON.stringify(appState.beds));
+            this.renderDashboard(); // update UI dashboard di background
+
+            // Kirim ke Google Sheet
+            this.jsonp(`${CONFIG.sheetUrl}?action=update&room_id=${roomId}&bed_num=${bedNum}&status=${ns}`);
+            
+            this.showView('success');
+        },
+
+        // Bersihkan URL setelah scan agar kembali ke mode publik
+        clearParams: function() {
+            window.history.replaceState({}, document.title, window.location.pathname);
+            this.showView('home');
+        },
+
+        sync: function() {
+            let icon = document.querySelector('.fab');
+            if(icon) icon.style.animation = 'spin 1s linear infinite';
+            
+            this.jsonp(`${CONFIG.sheetUrl}?action=getAll`, (d) => {
+                if(icon) icon.style.animation = 'none';
+                if(d && d.beds) {
+                    let s = {}; d.beds.forEach(b => s[`${b.room_id}-${b.bed_num}`] = b.status);
+                    appState.beds = s; localStorage.setItem('bed_data', JSON.stringify(s));
+                    this.renderDashboard();
+                }
+            });
+        },
+
+        jsonp: function(url, cb) {
+            let id = 'j'+Date.now();
+            window[id] = function(d){ if(cb)cb(d); delete window[id]; document.getElementById(id).remove(); };
+            let s = document.createElement('script');
+            s.id=id; s.src = url + (url.includes('?')?'&':'?') + 'callback=' + id;
+            document.body.appendChild(s);
+        }
+    };
+
+    // START APP
+    window.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+    <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
+</body>
+</html>
