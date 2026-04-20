@@ -156,6 +156,7 @@
 
     <script>
     const CONFIG = {
+        // --- LINK TERBARU MAS RAY ---
         sheetUrl: 'https://script.google.com/macros/s/AKfycbzJH3MaeyHq2VEIXBQIaGYzFzCsxLiW8V_NZOdb-raqY0RAn9h9GCRlEon1nYgBoWgVTQ/exec', 
         rooms: [
             {id:'edelweis', name:'Edelweis', type:'Dewasa/Lansia', beds:[1,2]},
@@ -248,7 +249,6 @@
             this.showView('confirm');
         },
 
-        // --- MENGGUNAKAN TEKNOLOGI FETCH MUTAKHIR ---
         processAction: async function() {
             let { roomId, bedNum, nextAction } = appState.pendingAction;
             let newStatus = nextAction === 'masuk' ? 'occupied' : 'available';
@@ -271,7 +271,6 @@
             this.showView('home');
         },
 
-        // --- SINKRONISASI ASYNCHRONOUS ---
         sync: async function() {
             let icon = document.querySelector('.fab i');
             let loader = document.getElementById('room-container');
@@ -296,7 +295,6 @@
                 }
             } catch (error) {
                 if(icon) icon.classList.remove('fa-spin');
-                // Tampilkan pesan error jika gagal mengambil data
                 if (Object.keys(appState.beds).length === 0) {
                     loader.innerHTML = `
                         <div style="text-align:center; padding: 60px 20px; color: var(--danger);">
