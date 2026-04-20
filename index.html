@@ -1,314 +1,118 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#059669">
-    <title>Status Bed · Puskesmas Gemarang</title>
-    
+    <title>SI-TIDUR · Puskesmas Gemarang</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        :root {
-            --primary: #059669; --bg: #f3f4f6; --card-bg: #ffffff;
-            --text-main: #1f2937; --text-sub: #6b7280;
-            --danger: #ef4444; --danger-bg: #fee2e2;
-            --success: #10b981; --success-bg: #d1fae5;
-        }
+        :root { --primary: #059669; --bg: #f3f4f6; --card-bg: #ffffff; --text-main: #1f2937; --text-sub: #6b7280; --danger: #ef4444; --success: #10b981; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); padding-bottom: 50px; 
-            -webkit-user-select: none; -ms-user-select: none; user-select: none;
-        }
-        
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); padding-bottom: 50px; user-select: none; }
         .container { max-width: 480px; margin: 0 auto; background: #fafafa; min-height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
-        
-        .header { 
-            background-image: url('image_fd50e8.jpg'); 
-            background-size: cover; background-position: center; color: white; padding: 40px 20px 60px; 
-            border-bottom-left-radius: 28px; border-bottom-right-radius: 28px; position: sticky; top: 0; z-index: 50; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2); background-blend-mode: multiply; background-color: rgba(0,0,0,0.15);
-        }
-        .header h1 { margin: 0; font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); }
-        .badge-live { background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; border: 1px solid rgba(255,255,255,0.3); text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
-        
-        .dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-
+        .header { background-image: url('image_fd50e8.jpg'); background-size: cover; background-position: center; color: white; padding: 40px 20px 60px; border-bottom-left-radius: 28px; border-bottom-right-radius: 28px; position: sticky; top: 0; z-index: 50; box-shadow: 0 8px 20px rgba(0,0,0,0.2); background-blend-mode: multiply; background-color: rgba(0,0,0,0.2); }
+        .header h1 { margin: 0; font-size: 18px; font-weight: 800; text-transform: uppercase; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); }
         .stats-container { display: flex; gap: 10px; padding: 0 20px; margin-top: -25px; position: relative; z-index: 60; }
-        .stat-card { flex: 1; background: var(--card-bg); padding: 15px 10px; border-radius: 16px; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .stat-val { font-size: 24px; font-weight: 800; display: block; line-height: 1; margin-bottom: 4px; }
+        .stat-card { flex: 1; background: var(--card-bg); padding: 15px 10px; border-radius: 16px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .stat-val { font-size: 24px; font-weight: 800; display: block; }
         .stat-label { font-size: 10px; color: var(--text-sub); text-transform: uppercase; font-weight: 700; }
-        .c-avail { color: var(--primary); } .c-occ { color: var(--danger); }
-
-        .last-update-box { text-align: center; margin-top: 15px; margin-bottom: 5px; }
-        .last-update-text { font-size: 11px; color: var(--text-sub); font-weight: 600; background: #e5e7eb; padding: 6px 14px; border-radius: 20px; display: inline-block; }
-
-        .room-card { background: var(--card-bg); margin: 0 20px 16px; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); overflow: hidden; border: 1px solid rgba(0,0,0,0.03); }
-        .room-header { padding: 12px 16px; background: #fff; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
-        .room-name { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 6px; }
+        .room-card { background: var(--card-bg); margin: 16px 20px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(0,0,0,0.03); }
+        .room-header { padding: 12px 16px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; font-weight: 800; }
         .bed-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 15px; }
-        
-        .bed-chip { display: flex; flex-direction: column; align-items: center; padding: 12px; border-radius: 12px; border: 1.5px solid transparent; position: relative; transition: transform 0.2s; overflow: hidden; }
-        .bed-icon-bg { position: absolute; right: -5px; bottom: -5px; width: 40px; height: 40px; opacity: 0.15; pointer-events: none; fill: currentColor; }
-        .bed-chip:active { transform: scale(0.95); } 
-        .bed-chip.available { background: var(--success-bg); border-color: #a7f3d0; color: #064e3b; }
-        .bed-chip.occupied { background: var(--danger-bg); border-color: #fecaca; color: #991b1b; }
-        .bed-content { position: relative; z-index: 2; text-align: center; }
-        .bed-num { font-size: 12px; font-weight: 600; opacity: 0.8; display: block; }
-        .bed-status { font-size: 14px; font-weight: 800; display: block; }
-
-        .info-box { margin: 10px 20px 80px; background: #eff6ff; border: 1px solid #dbeafe; border-radius: 16px; padding: 20px; text-align: center; }
-        .info-text { font-size: 13px; line-height: 1.6; color: #1e3a8a; margin-bottom: 15px; }
-        .btn-wa-block { display: flex; align-items: center; justify-content: center; gap: 10px; background: #25D366; color: white; text-decoration: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 14px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); transition: transform 0.2s; }
-
-        .admin-badge { display: none; background: #ef4444; color: white; padding: 2px 8px; border-radius: 10px; font-size: 9px; font-weight: bold; }
-        .admin-mode .admin-badge { display: inline-block; }
+        .bed-chip { padding: 12px; border-radius: 12px; text-align: center; border: 1.5px solid transparent; }
+        .bed-chip.available { background: #d1fae5; color: #064e3b; border-color: #a7f3d0; }
+        .bed-chip.occupied { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
         .fab-container { position: fixed; bottom: 24px; right: 24px; z-index: 100; }
-        .fab { background: var(--text-main); color: white; width: 50px; height: 50px; border-radius: 50%; font-weight: 700; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        
-        .view { display: none; animation: slideUp 0.3s ease-out; }
-        .view.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .fs-msg { height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px; }
-        .btn-full { width: 100%; padding: 16px; border-radius: 16px; border: none; font-weight: 700; font-size: 16px; margin-top: 10px; cursor: pointer; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-ghost { background: transparent; color: var(--text-sub); }
+        .fab { background: var(--text-main); color: white; width: 50px; height: 50px; border-radius: 50%; border: none; font-size: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .view { display: none; } .view.active { display: block; }
+        #error-msg { display: none; text-align: center; padding: 40px 20px; color: var(--danger); font-weight: 600; }
     </style>
 </head>
-<body oncontextmenu="return false;">
-    <div class="container" id="app-container">
-
-        <div id="view-home" class="view">
+<body>
+    <div class="container">
+        <div id="view-home" class="view active">
             <header class="header">
-                <div style="display:flex; justify-content:space-between; align-items:center">
-                    <div>
-                        <h1>🏥 PUSKESMAS GEMARANG</h1>
-                        <div class="badge-live"><div class="dot"></div>Live Monitor</div>
-                    </div>
-                    <span class="admin-badge">ADMIN</span>
-                </div>
+                <h1>🏥 PUSKESMAS GEMARANG</h1>
+                <div style="font-size:10px; font-weight:700; margin-top:5px; opacity:0.9"><i class="fas fa-circle" style="color:#4ade80; font-size:8px"></i> MONITORING REAL-TIME</div>
             </header>
-
             <div class="stats-container">
-                <div class="stat-card"> <span class="stat-val" id="total-beds">0</span> <span class="stat-label">Total</span> </div>
-                <div class="stat-card"> <span class="stat-val c-avail" id="avail-beds">0</span> <span class="stat-label">Kosong</span> </div>
-                <div class="stat-card"> <span class="stat-val c-occ" id="occ-beds">0</span> <span class="stat-label">Terisi</span> </div>
+                <div class="stat-card"><span class="stat-val" id="total-beds">0</span><span class="stat-label">Total</span></div>
+                <div class="stat-card"><span class="stat-val" style="color:var(--primary)" id="avail-beds">0</span><span class="stat-label">Kosong</span></div>
+                <div class="stat-card"><span class="stat-val" style="color:var(--danger)" id="occ-beds">0</span><span class="stat-label">Terisi</span></div>
             </div>
-
-            <div class="last-update-box">
-                <span id="last-update-text" class="last-update-text">Memuat data terbaru...</span>
-            </div>
-
-            <div id="room-container">
-                <div style="text-align:center; padding: 60px 20px; color: var(--text-sub);">
-                    <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom:15px"></i><br>
-                    Mengambil data ruangan...
-                </div>
-            </div>
-
-            <div class="info-box">
-                <p class="info-text">
-                    <b><i class="fas fa-info-circle"></i> Informasi Penting:</b><br>
-                    Bila kamar tersedia, Silahkan datang ke Puskesmas dan kami akan memeriksa pasien berdasarkan kondisi memenuhi tidaknya syarat untuk rawat inap. 
-                    <br><br>
-                    Atau hubungi kami untuk konfirmasi ketersediaan ruangan dan pastikan membawa identitas pasien.
-                </p>
-                <a href="https://wa.me/62852599027323" class="btn-wa-block" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Hubungi Kami (WhatsApp)
-                </a>
-            </div>
-
-            <div class="fab-container">
-                <button class="fab" onclick="app.sync()"><i class="fas fa-sync-alt"></i></button>
-            </div>
+            <div style="text-align:center; margin-top:15px;"><span id="last-update" style="font-size:11px; color:var(--text-sub); background:#e5e7eb; padding:5px 12px; border-radius:20px;">Menghubungkan...</span></div>
+            <div id="error-msg"><i class="fas fa-exclamation-triangle"></i><br>Koneksi Terganggu.<br><small>Sistem gagal menarik data JSONP.</small></div>
+            <div id="room-container"></div>
+            <div class="fab-container"><button class="fab" onclick="app.sync()"><i class="fas fa-sync-alt"></i></button></div>
         </div>
-
-        <div id="view-confirm" class="view">
-            <div class="fs-msg">
-                <div style="font-size:60px; margin-bottom:20px">🔄</div>
-                <h2 id="confirm-title" style="margin-bottom: 10px;">Konfirmasi</h2>
-                <p id="confirm-desc" style="color:var(--text-sub); line-height: 1.6; margin-bottom: 30px;">...</p>
-                <button class="btn-full" id="btn-process" onclick="app.processAction()">Ya, Proses</button>
-                <button class="btn-full btn-ghost" onclick="app.clearParams()">Batal / Kembali</button>
-            </div>
-        </div>
-
-        <div id="view-success" class="view">
-            <div class="fs-msg">
-                <div style="font-size:60px; color: var(--success); margin-bottom:20px">✅</div>
-                <h2 style="margin-bottom: 10px;">Berhasil!</h2>
-                <p style="color:var(--text-sub); margin-bottom: 40px;">Status bed telah diperbarui.</p>
-                <button class="btn-full btn-primary" onclick="app.clearParams()">Kembali ke Dashboard</button>
-            </div>
-        </div>
-
     </div>
-
-    <svg style="display: none;">
-        <symbol id="icon-bed-bg" viewBox="0 0 24 24">
-            <path d="M19 7h-8v-3a1 1 0 0 0 -1 -1h-8a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h1.5a1 1 0 0 0 1 -1v-2h13v2a1 1 0 0 0 1 1h1.5a1 1 0 0 0 1 -1v-5a4 4 0 0 0 -4 -4zm-14 -2h6v2h-6v-2zm14 8h-14v-4h3v2.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5 -1.5v-2.5h2a2 2 0 0 1 2 2v2z"/>
-        </symbol>
-    </svg>
 
     <script>
     const CONFIG = {
-        // --- LINK TERBARU MAS RAY ---
-        sheetUrl: 'https://script.google.com/macros/s/AKfycbzJH3MaeyHq2VEIXBQIaGYzFzCsxLiW8V_NZOdb-raqY0RAn9h9GCRlEon1nYgBoWgVTQ/exec', 
+        // LINK SUDAH DIPASTIKAN BENAR SESUAI FOTO
+        sheetUrl: 'https://script.google.com/macros/s/AKfycbzJH3MaeyHq2VEIXBQIaGYzFzCsxLiW8V_NZOdb-raqY0RAn9h9GCRlEon1nYgBoWgVTQ/exec',
         rooms: [
-            {id:'edelweis', name:'Edelweis', type:'Dewasa/Lansia', beds:[1,2]},
-            {id:'mawar',    name:'Mawar',    type:'Dewasa/Lansia', beds:[1,2]},
-            {id:'sakura',   name:'Sakura',   type:'Dewasa/Lansia', beds:[1,2]},
-            {id:'tulip',    name:'Tulip',    type:'Dewasa/Lansia', beds:[1,2]},
-            {id:'bougenv',  name:'Bougenville', type:'Anak', beds:[1]},
-            {id:'anggrek',  name:'Anggrek',  type:'VIP', beds:[1]},
+            {id:'edelweis', name:'Edelweis', type:'Dewasa', beds:[1,2]},
+            {id:'mawar', name:'Mawar', type:'Dewasa', beds:[1,2]},
+            {id:'sakura', name:'Sakura', type:'Dewasa', beds:[1,2]},
+            {id:'tulip', name:'Tulip', type:'Dewasa', beds:[1,2]},
+            {id:'bougenv', name:'Bougenville', type:'Anak', beds:[1]},
+            {id:'anggrek', name:'Anggrek', type:'VIP', beds:[1]}
         ]
     };
 
-    let appState = { beds: {}, pendingAction: null, isAdmin: false };
-
     const app = {
-        init: function() {
-            if(new URLSearchParams(window.location.search).get('mode') === 'perawat') {
-                appState.isAdmin = true;
-                document.getElementById('app-container').classList.add('admin-mode');
-            }
-            this.showView('home');
-            this.sync();
-            setInterval(() => { if(document.getElementById('view-home').style.display !== 'none') this.sync(); }, 30000); 
-        },
+        beds: {},
+        sync: function() {
+            document.querySelector('.fab i').classList.add('fa-spin');
+            const callbackName = 'jsonp_' + Date.now();
+            const script = document.createElement('script');
+            // Menambahkan parameter waktu agar menembus cache
+            script.src = `${CONFIG.sheetUrl}?action=getAll&callback=${callbackName}&_t=${Date.now()}`;
+            
+            window[callbackName] = (data) => {
+                document.querySelector('.fab i').classList.remove('fa-spin');
+                document.getElementById('error-msg').style.display = 'none';
+                if(data && data.beds) {
+                    data.beds.forEach(b => { this.beds[`${b.room_id}-${b.bed_num}`] = b.status; });
+                    this.render();
+                    document.getElementById('last-update').innerText = 'Update: ' + data.last_updated;
+                }
+                delete window[callbackName];
+                script.remove();
+            };
 
-        showView: function(id) {
-            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-            document.getElementById('view-' + id).classList.add('active');
-            window.scrollTo(0,0);
+            script.onerror = () => {
+                document.querySelector('.fab i').classList.remove('fa-spin');
+                document.getElementById('error-msg').style.display = 'block';
+            };
+            document.body.appendChild(script);
         },
-
-        renderDashboard: function() {
+        render: function() {
             let html = '', total=0, avail=0, occ=0;
             CONFIG.rooms.forEach(r => {
                 let bedHtml = '';
                 r.beds.forEach(b => {
-                    const key = `${r.id}-${b}`;
-                    const st = appState.beds[key] || 'available';
-                    
-                    total++; st==='available' ? avail++ : occ++;
-                    
-                    let label = (st==='available' || st==='Tersedia') ? 'KOSONG' : 'TERISI';
-                    let cssClass = (st==='available' || st==='Tersedia') ? 'available' : 'occupied';
-
-                    let clickAction = appState.isAdmin ? `onclick="app.prepareConfirm('${r.id}', '${r.name}', ${b}, '${label}')"` : '';
-
-                    bedHtml += `
-                    <div class="bed-chip ${cssClass}" ${clickAction}>
-                        <svg class="bed-icon-bg"><use xlink:href="#icon-bed-bg"></use></svg>
-                        <div class="bed-content">
-                            <span class="bed-num">BED ${b}</span>
-                            <span class="bed-status">${label}</span>
-                            ${appState.isAdmin ? '<div style="font-size:9px; margin-top:2px; text-decoration:underline">Ubah</div>' : ''}
-                        </div>
-                    </div>`;
+                    total++;
+                    const st = this.beds[`${r.id}-${b}`] || 'available';
+                    st === 'available' ? avail++ : occ++;
+                    // Sesuaikan dengan data yang keluar dari Apps Script Mas ("occupied" atau "available")
+                    const label = (st === 'occupied' || st === 'Terisi') ? 'TERISI' : 'KOSONG';
+                    const cssClass = (st === 'occupied' || st === 'Terisi') ? 'occupied' : 'available';
+                    bedHtml += `<div class="bed-chip ${cssClass}"><b>BED ${b}</b><br><small>${label}</small></div>`;
                 });
-
-                html += `
-                <div class="room-card">
-                    <div class="room-header">
-                        <div class="room-name"><i class="fas fa-procedures" style="color:var(--primary)"></i> ${r.name}</div>
-                        <div style="font-size:10px; font-weight:bold; color:var(--text-sub); text-transform:uppercase">${r.type}</div>
-                    </div>
-                    <div class="bed-grid">${bedHtml}</div>
-                </div>`;
+                html += `<div class="room-card"><div class="room-header"><span>${r.name}</span><small style="color:var(--text-sub)">${r.type}</small></div><div class="bed-grid">${bedHtml}</div></div>`;
             });
             document.getElementById('room-container').innerHTML = html;
             document.getElementById('total-beds').innerText = total;
             document.getElementById('avail-beds').innerText = avail;
             document.getElementById('occ-beds').innerText = occ;
-        },
-
-        prepareConfirm: function(roomId, roomName, bedNum, currentLabel) {
-            let nextAction = (currentLabel === 'KOSONG') ? 'masuk' : 'pulang';
-            appState.pendingAction = { roomId, roomName, bedNum, nextAction };
-            
-            document.getElementById('confirm-title').innerText = nextAction === 'masuk' ? 'Pasien Masuk?' : 'Pasien Pulang?';
-            document.getElementById('confirm-desc').innerHTML = `
-                Ubah status <b>${roomName} - Bed ${bedNum}</b><br>
-                menjadi <span style="font-weight:bold">${nextAction==='masuk'?'TERISI':'KOSONG'}</span>?
-            `;
-            
-            let btn = document.getElementById('btn-process');
-            if(nextAction === 'masuk') {
-                btn.className = 'btn-full btn-danger';
-                btn.innerText = 'Ya, Konfirmasi Masuk';
-            } else {
-                btn.className = 'btn-full btn-primary';
-                btn.innerText = 'Ya, Konfirmasi Pulang';
-            }
-            this.showView('confirm');
-        },
-
-        processAction: async function() {
-            let { roomId, bedNum, nextAction } = appState.pendingAction;
-            let newStatus = nextAction === 'masuk' ? 'occupied' : 'available';
-            
-            appState.beds[`${roomId}-${bedNum}`] = newStatus;
-            this.renderDashboard(); 
-            this.showView('success');
-
-            try {
-                let url = `${CONFIG.sheetUrl}?action=update&room_id=${roomId}&bed_num=${bedNum}&status=${newStatus}&_nocache=${Date.now()}`;
-                let response = await fetch(url);
-                let d = await response.json();
-                if(d && d.time) document.getElementById('last-update-text').innerText = `Terupdate: ${d.time}`;
-            } catch (error) {
-                console.error("Gagal update:", error);
-            }
-        },
-
-        clearParams: function() {
-            this.showView('home');
-        },
-
-        sync: async function() {
-            let icon = document.querySelector('.fab i');
-            let loader = document.getElementById('room-container');
-            if(icon) icon.classList.add('fa-spin');
-            
-            try {
-                let url = `${CONFIG.sheetUrl}?action=getAll&_nocache=${Date.now()}`;
-                let response = await fetch(url);
-                let d = await response.json();
-
-                if(icon) icon.classList.remove('fa-spin');
-                
-                if(d && d.beds) {
-                    let s = {}; 
-                    d.beds.forEach(b => { s[`${b.room_id}-${b.bed_num}`] = b.status; });
-                    appState.beds = s; 
-                    this.renderDashboard();
-
-                    if(d.last_updated && d.last_updated !== '-') {
-                        document.getElementById('last-update-text').innerText = `Terupdate: ${d.last_updated} WIB`;
-                    }
-                }
-            } catch (error) {
-                if(icon) icon.classList.remove('fa-spin');
-                if (Object.keys(appState.beds).length === 0) {
-                    loader.innerHTML = `
-                        <div style="text-align:center; padding: 60px 20px; color: var(--danger);">
-                            <i class="fas fa-exclamation-triangle fa-2x" style="margin-bottom:15px"></i><br>
-                            <b>Gagal Menghubungkan ke Database.</b><br>
-                            <span style="font-size: 12px; color: var(--text-sub);">Pastikan Google Sheets sudah di-deploy dengan akses "Anyone" (Siapa Saja).</span>
-                        </div>`;
-                }
-                console.error("Koneksi gagal:", error);
-            }
         }
     };
-
-    window.addEventListener('DOMContentLoaded', () => app.init());
+    window.onload = () => app.sync();
     </script>
 </body>
 </html>
