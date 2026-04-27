@@ -236,9 +236,8 @@
             this.showView('confirm');
         },
 
-        
-            }
-
+        processAction: function() {
+            
             let { roomId, bedNum, nextAction } = appState.pendingAction;
             let newStatus = nextAction === 'masuk' ? 'occupied' : 'available';
             appState.beds[`${roomId}-${bedNum}`] = newStatus;
@@ -294,4 +293,3 @@
     </script>
 </body>
 </html>
- 
